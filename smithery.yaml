@@ -1,0 +1,94 @@
+# AgentPay Gateway MCP — Smithery Manifest
+# https://smithery.ai/docs
+name: agentpay-gateway-mcp
+version: "1.0.0"
+description: >
+  Centralized API gateway routing to 42 MCP servers with per-call credit billing.
+  Free tier: 100 credits/day. Pro tier: 10,000 credits/day ($19/mo).
+
+entrypoint: server.py
+runtime: python
+python_version: "3.12"
+
+dependencies:
+  mcp: ">=1.0.0"
+  httpx: ">=0.25.0"
+  supabase: ">=2.0.0"
+  stripe: ">=8.0.0"
+  python-dotenv: ">=1.0.0"
+  anyio: ">=4.0.0"
+
+env:
+  SUPABASE_URL:
+    description: Supabase project URL
+    required: false
+  SUPABASE_SERVICE_KEY:
+    description: Supabase service role key
+    required: false
+  STRIPE_API_KEY:
+    description: Stripe API key
+    required: false
+  STRIPE_WEBHOOK_SECRET:
+    description: Stripe webhook signing secret
+    required: false
+  STRIPE_CHECKOUT_LINK:
+    description: Stripe checkout URL for Pro tier upgrades
+    required: false
+  PORT:
+    description: HTTP port
+    default: "8000"
+    required: false
+
+tools:
+  - name: gateway_info
+    description: >
+      Get AgentPay Gateway info: available tools, pricing, and your current usage.
+    parameters:
+      api_key:
+        type: string
+        description: Your AgentPay API key
+        required: true
+
+  - name: gateway_usage
+    description: >
+      Get detailed usage statistics for your API key over a time range.
+    parameters:
+      api_key:
+        type: string
+        description: Your AgentPay API key
+        required: true
+      days:
+        type: integer
+        description: Number of days to look back (1-30)
+        default: 7
+
+  - name: gateway_upsell
+    description: >
+      Get a Stripe checkout link to upgrade to the Pro tier
+      (10,000 credits/day for $19/month).
+    parameters:
+      api_key:
+        type: string
+        description: Your AgentPay API key
+        required: true
+      quantity:
+        type: integer
+        description: Number of months to purchase
+        default: 1
+
+  - name: gateway_health
+    description: >
+      Health check for the AgentPay Gateway. Verifies Supabase connectivity
+      and all backend server status.
+    parameters: {}
+
+  # All 42 proxied backend tools are dynamically registered at runtime.
+  # Each tool requires an api_key and args parameter.
+  # Credit cost per tool varies by backend server complexity.
+
+homepage: https://github.com/AgentPayLabs/agentpay-gateway-mcp
+repository: https://github.com/AgentPayLabs/agentpay-gateway-mcp
+bugs: https://github.com/AgentPayLabs/agentpay-gateway-mcp/issues
+authors:
+  - name: AgentPay Labs
+    email: team@agentpay.ai

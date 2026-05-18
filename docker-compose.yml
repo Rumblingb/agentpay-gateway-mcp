@@ -1,0 +1,533 @@
+version: "3.8"
+
+services:
+  # ── AgentPay Gateway (main entry point) ──────────────────────────────────
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agentpay-gateway
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_SERVICE_KEY: ${SUPABASE_SERVICE_KEY:-}
+      STRIPE_API_KEY: ${STRIPE_API_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      STRIPE_CHECKOUT_LINK: ${STRIPE_CHECKOUT_LINK:-http://localhost:8000/checkout}
+      PORT: 8000
+      LOCAL_BACKENDS: "0"
+    depends_on:
+      - search-proxy
+      - agent-audit
+      - agent-contract
+      - agent-cost-tracker
+      - agent-hire
+      - agent-memory
+      - agent-messaging
+      - agent-passport
+      - agent-proof
+      - agent-team
+      - agent-wallet
+      - agent-legal-counsel
+      - contract-analyzer
+      - court-records
+      - crypto-market
+      - currency-exchange
+      - database-mcp
+      - dns-lookup
+      - domain-data
+      - domain-intel
+      - email-agent
+      - email-verify
+      - file-converter
+      - hackernews
+      - hallucination-guard
+      - image-analyzer
+      - ip-geolocation
+      - mcp-health-monitor
+      - notification
+      - patent-search
+      - pdf-generator
+      - qr-code
+      - rental-agent
+      - screenshot
+      - sec-financial
+      - secret-scanner
+      - seo-audit
+      - ssl-check
+      - text-to-speech
+      - weather
+      - web-scraper
+      - wikipedia
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  # ── Backend MCP Servers ──────────────────────────────────────────────────
+
+  search-proxy:
+    image: agentpay/search-proxy-mcp:latest
+    container_name: search-proxy-mcp
+    ports:
+      - "8011:8011"
+    environment:
+      - PORT=8011
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-audit:
+    image: agentpay/agent-audit-mcp:latest
+    container_name: agent-audit-mcp
+    ports:
+      - "8012:8012"
+    environment:
+      - PORT=8012
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-contract:
+    image: agentpay/agent-contract-mcp:latest
+    container_name: agent-contract-mcp
+    ports:
+      - "8013:8013"
+    environment:
+      - PORT=8013
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-cost-tracker:
+    image: agentpay/agent-cost-tracker-mcp:latest
+    container_name: agent-cost-tracker-mcp
+    ports:
+      - "8014:8014"
+    environment:
+      - PORT=8014
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-hire:
+    image: agentpay/agent-hire-mcp:latest
+    container_name: agent-hire-mcp
+    ports:
+      - "8015:8015"
+    environment:
+      - PORT=8015
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-legal-counsel:
+    image: agentpay/agent-legal-counsel-mcp:latest
+    container_name: agent-legal-counsel-mcp
+    ports:
+      - "8021:8021"
+    environment:
+      - PORT=8021
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-memory:
+    image: agentpay/agent-memory-mcp:latest
+    container_name: agent-memory-mcp
+    ports:
+      - "8016:8016"
+    environment:
+      - PORT=8016
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-messaging:
+    image: agentpay/agent-messaging-mcp:latest
+    container_name: agent-messaging-mcp
+    ports:
+      - "8017:8017"
+    environment:
+      - PORT=8017
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-passport:
+    image: agentpay/agent-passport-mcp:latest
+    container_name: agent-passport-mcp
+    ports:
+      - "8018:8018"
+    environment:
+      - PORT=8018
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-proof:
+    image: agentpay/agent-proof-mcp:latest
+    container_name: agent-proof-mcp
+    ports:
+      - "8019:8019"
+    environment:
+      - PORT=8019
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-team:
+    image: agentpay/agent-team-mcp:latest
+    container_name: agent-team-mcp
+    ports:
+      - "8020:8020"
+    environment:
+      - PORT=8020
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  agent-wallet:
+    image: agentpay/agent-wallet-mcp:latest
+    container_name: agent-wallet-mcp
+    ports:
+      - "8022:8022"
+    environment:
+      - PORT=8022
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  contract-analyzer:
+    image: agentpay/contract-analyzer-mcp:latest
+    container_name: contract-analyzer-mcp
+    ports:
+      - "8023:8023"
+    environment:
+      - PORT=8023
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  court-records:
+    image: agentpay/court-records-mcp:latest
+    container_name: court-records-mcp
+    ports:
+      - "8024:8024"
+    environment:
+      - PORT=8024
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  crypto-market:
+    image: agentpay/crypto-market-mcp:latest
+    container_name: crypto-market-mcp
+    ports:
+      - "8025:8025"
+    environment:
+      - PORT=8025
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  currency-exchange:
+    image: agentpay/currency-exchange-mcp:latest
+    container_name: currency-exchange-mcp
+    ports:
+      - "8026:8026"
+    environment:
+      - PORT=8026
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  database-mcp:
+    image: agentpay/database-mcp:latest
+    container_name: database-mcp
+    ports:
+      - "8027:8027"
+    environment:
+      - PORT=8027
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  dns-lookup:
+    image: agentpay/dns-lookup-mcp:latest
+    container_name: dns-lookup-mcp
+    ports:
+      - "8028:8028"
+    environment:
+      - PORT=8028
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  domain-data:
+    image: agentpay/domain-data-mcp:latest
+    container_name: domain-data-mcp
+    ports:
+      - "8029:8029"
+    environment:
+      - PORT=8029
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  domain-intel:
+    image: agentpay/domain-intel-mcp:latest
+    container_name: domain-intel-mcp
+    ports:
+      - "8030:8030"
+    environment:
+      - PORT=8030
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  email-agent:
+    image: agentpay/email-agent-mcp:latest
+    container_name: email-agent-mcp
+    ports:
+      - "8031:8031"
+    environment:
+      - PORT=8031
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  email-verify:
+    image: agentpay/email-verify-mcp:latest
+    container_name: email-verify-mcp
+    ports:
+      - "8032:8032"
+    environment:
+      - PORT=8032
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  file-converter:
+    image: agentpay/file-converter-mcp:latest
+    container_name: file-converter-mcp
+    ports:
+      - "8033:8033"
+    environment:
+      - PORT=8033
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  hackernews:
+    image: agentpay/hackernews-mcp:latest
+    container_name: hackernews-mcp
+    ports:
+      - "8034:8034"
+    environment:
+      - PORT=8034
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  hallucination-guard:
+    image: agentpay/hallucination-guard:latest
+    container_name: hallucination-guard
+    ports:
+      - "8035:8035"
+    environment:
+      - PORT=8035
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  image-analyzer:
+    image: agentpay/image-analyzer-mcp:latest
+    container_name: image-analyzer-mcp
+    ports:
+      - "8036:8036"
+    environment:
+      - PORT=8036
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  ip-geolocation:
+    image: agentpay/ip-geolocation-mcp:latest
+    container_name: ip-geolocation-mcp
+    ports:
+      - "8037:8037"
+    environment:
+      - PORT=8037
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  mcp-health-monitor:
+    image: agentpay/mcp-health-monitor:latest
+    container_name: mcp-health-monitor
+    ports:
+      - "8038:8038"
+    environment:
+      - PORT=8038
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  notification:
+    image: agentpay/notification-mcp:latest
+    container_name: notification-mcp
+    ports:
+      - "8039:8039"
+    environment:
+      - PORT=8039
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  patent-search:
+    image: agentpay/patent-search-mcp:latest
+    container_name: patent-search-mcp
+    ports:
+      - "8040:8040"
+    environment:
+      - PORT=8040
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  pdf-generator:
+    image: agentpay/pdf-generator-mcp:latest
+    container_name: pdf-generator-mcp
+    ports:
+      - "8041:8041"
+    environment:
+      - PORT=8041
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  qr-code:
+    image: agentpay/qr-code-mcp:latest
+    container_name: qr-code-mcp
+    ports:
+      - "8042:8042"
+    environment:
+      - PORT=8042
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  rental-agent:
+    image: agentpay/rental-agent-mcp:latest
+    container_name: rental-agent-mcp
+    ports:
+      - "8043:8043"
+    environment:
+      - PORT=8043
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  screenshot:
+    image: agentpay/screenshot-mcp:latest
+    container_name: screenshot-mcp
+    ports:
+      - "8044:8044"
+    environment:
+      - PORT=8044
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  sec-financial:
+    image: agentpay/sec-financial-mcp:latest
+    container_name: sec-financial-mcp
+    ports:
+      - "8045:8045"
+    environment:
+      - PORT=8045
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  secret-scanner:
+    image: agentpay/secret-scanner-mcp:latest
+    container_name: secret-scanner-mcp
+    ports:
+      - "8046:8046"
+    environment:
+      - PORT=8046
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  seo-audit:
+    image: agentpay/seo-audit-mcp:latest
+    container_name: seo-audit-mcp
+    ports:
+      - "8047:8047"
+    environment:
+      - PORT=8047
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  ssl-check:
+    image: agentpay/ssl-check-mcp:latest
+    container_name: ssl-check-mcp
+    ports:
+      - "8048:8048"
+    environment:
+      - PORT=8048
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  text-to-speech:
+    image: agentpay/text-to-speech-mcp:latest
+    container_name: text-to-speech-mcp
+    ports:
+      - "8049:8049"
+    environment:
+      - PORT=8049
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  weather:
+    image: agentpay/weather-mcp:latest
+    container_name: weather-mcp
+    ports:
+      - "8050:8050"
+    environment:
+      - PORT=8050
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  web-scraper:
+    image: agentpay/web-scraper-mcp:latest
+    container_name: web-scraper-mcp
+    ports:
+      - "8051:8051"
+    environment:
+      - PORT=8051
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+  wikipedia:
+    image: agentpay/wikipedia-mcp:latest
+    container_name: wikipedia-mcp
+    ports:
+      - "8052:8052"
+    environment:
+      - PORT=8052
+    restart: unless-stopped
+    networks:
+      - agentpay-net
+
+networks:
+  agentpay-net:
+    driver: bridge

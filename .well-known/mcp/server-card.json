@@ -1,0 +1,305 @@
+{
+  "name": "agentpay-gateway-mcp",
+  "description": "Centralized API gateway routing to 42 MCP servers with per-call credit billing. Free tier: 100 credits/day. Pro tier: 10,000 credits/day ($19/mo).",
+  "version": "1.0.0",
+  "tools": {
+    "gateway_info": {
+      "description": "Get AgentPay Gateway info: available tools, pricing, and your current usage.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": {
+            "type": "string",
+            "description": "Your AgentPay API key"
+          }
+        },
+        "required": ["api_key"]
+      }
+    },
+    "gateway_usage": {
+      "description": "Get detailed usage statistics for your API key over a time range.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": {
+            "type": "string",
+            "description": "Your AgentPay API key"
+          },
+          "days": {
+            "type": "integer",
+            "description": "Number of days to look back (1-30)",
+            "default": 7
+          }
+        },
+        "required": ["api_key"]
+      }
+    },
+    "gateway_upsell": {
+      "description": "Get a Stripe checkout link to upgrade to the Pro tier (10,000 credits/day for $19/month).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": {
+            "type": "string",
+            "description": "Your AgentPay API key"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "Number of months to purchase",
+            "default": 1
+          }
+        },
+        "required": ["api_key"]
+      }
+    },
+    "gateway_health": {
+      "description": "Health check for the AgentPay Gateway. Verifies Supabase connectivity and all backend server status.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    "search_web": {
+      "description": "Proxy to search-proxy-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to search_web backend",
+            "properties": {
+              "query": { "type": "string", "description": "Search query" },
+              "max_results": { "type": "integer", "description": "Max results (1-20)", "default": 5 }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "search_news": {
+      "description": "Proxy to search-proxy-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to search_news backend",
+            "properties": {
+              "query": { "type": "string", "description": "News search query" },
+              "max_results": { "type": "integer", "description": "Max results", "default": 5 }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "search_get_page_content": {
+      "description": "Proxy to search-proxy-mcp. Cost: 2 credits.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to search_get_page_content backend",
+            "properties": {
+              "url": { "type": "string", "description": "URL to fetch" },
+              "max_chars": { "type": "integer", "description": "Max characters to return", "default": 5000 }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "wikipedia_search": {
+      "description": "Proxy to wikipedia-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to wikipedia_search backend",
+            "properties": {
+              "query": { "type": "string", "description": "Wikipedia search query" }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "wikipedia_article": {
+      "description": "Proxy to wikipedia-mcp. Cost: 2 credits.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to wikipedia_article backend",
+            "properties": {
+              "title": { "type": "string", "description": "Article title" }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "weather_current": {
+      "description": "Proxy to weather-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to weather_current backend",
+            "properties": {
+              "location": { "type": "string", "description": "City or coordinates" }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "weather_forecast": {
+      "description": "Proxy to weather-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to weather_forecast backend",
+            "properties": {
+              "location": { "type": "string", "description": "City or coordinates" },
+              "days": { "type": "integer", "description": "Forecast days", "default": 5 }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "crypto_price": {
+      "description": "Proxy to crypto-market-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to crypto_price backend",
+            "properties": {
+              "symbol": { "type": "string", "description": "Crypto symbol (e.g., BTC, ETH)" }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "crypto_market_data": {
+      "description": "Proxy to crypto-market-mcp. Cost: 2 credits.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to crypto_market_data backend",
+            "properties": {
+              "symbol": { "type": "string", "description": "Crypto symbol" }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "currency_convert": {
+      "description": "Proxy to currency-exchange-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to currency_convert backend",
+            "properties": {
+              "amount": { "type": "number", "description": "Amount to convert" },
+              "from": { "type": "string", "description": "Source currency code" },
+              "to": { "type": "string", "description": "Target currency code" }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "hackernews_top": {
+      "description": "Proxy to hackernews-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to hn_top backend",
+            "properties": {
+              "limit": { "type": "integer", "description": "Number of stories", "default": 10 }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "dns_lookup": {
+      "description": "Proxy to dns-lookup-mcp. Cost: 1 credit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to dns_lookup backend",
+            "properties": {
+              "domain": { "type": "string", "description": "Domain to look up" }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    },
+    "ssl_check": {
+      "description": "Proxy to ssl-check-mcp. Cost: 2 credits.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_key": { "type": "string", "description": "AgentPay API key" },
+          "args": {
+            "type": "object",
+            "description": "Arguments forwarded to ssl_check backend",
+            "properties": {
+              "domain": { "type": "string", "description": "Domain to check" }
+            }
+          }
+        },
+        "required": ["api_key", "args"]
+      }
+    }
+  },
+  "docs": "https://github.com/AgentPayLabs/agentpay-gateway-mcp#readme",
+  "issues": "https://github.com/AgentPayLabs/agentpay-gateway-mcp/issues",
+  "homepage": "https://agentpay.ai",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AgentPayLabs/agentpay-gateway-mcp"
+  },
+  "authors": [
+    {
+      "name": "AgentPay Labs",
+      "email": "team@agentpay.ai",
+      "homepage": "https://agentpay.ai"
+    }
+  ]
+}
