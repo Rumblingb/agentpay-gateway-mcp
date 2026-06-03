@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" width="80" alt="AgentPay">
+</p>
+
 # AgentPay Gateway MCP
 
 One MCP installation gives your agent access to 42 backend servers — web search, legal analysis, domain intelligence, QR codes, email verification, SEC filings, patent lookup, and more — with per-call credit billing and one API key instead of 42.
