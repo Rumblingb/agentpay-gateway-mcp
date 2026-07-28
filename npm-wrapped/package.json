@@ -1,0 +1,11 @@
+{
+  "name": "agentpay-gateway-mcp",
+  "version": "1.0.0",
+  "description": "Centralized API gateway routing to MCP servers with per-call billing",
+  "bin": {"gateway-mcp": "cli.js"},
+  "mcpName": "io.github.rumblingb/agentpay-gateway-mcp",
+  "keywords": ["mcp", "agentpay", "gateway", "ai"],
+  "license": "MIT",
+  "repository": {"type": "git", "url": "https://github.com/rumblingb/agentpay-gateway-mcp"},
+  "engines": {"node": ">=18.0.0"}
+}
